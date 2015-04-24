@@ -1,0 +1,108 @@
+{
+  "targets": [
+    "phosphor",
+    "past",
+    "average",
+    "blur_horizontal",
+    "blur",
+    "threshold",
+    "day",
+    "night",
+    "fog",
+    "composite"
+  ],
+  "passes": [
+    {
+      "name": "Invictus_phosphor",
+      "intarget": "minecraft:main",
+      "outtarget": "phosphor",
+      "auxtargets": [
+          {
+              "name": "PastSampler",
+              "id": "past"
+          }
+       ],
+       "uniforms": [
+          {
+              "name": "opacity",
+              "values": [ 0.35 ],
+              "__comment": "smaller numbers shift faster"
+          }
+       ]
+    },
+    {
+      "name": "Invictus_blur_horizontal",
+      "intarget": "phosphor",
+      "outtarget": "blur_horizontal",
+      "uniforms": [
+         {
+             "name": "resolution",
+             "values": [ 256 ],
+             "__comment": "lower number = more blur and choppiness - used in bloom"
+         }
+      ]
+    },
+    {
+      "name": "Invictus_blur_vertical",
+      "intarget": "blur_horizontal",
+      "outtarget": "blur",
+      "uniforms": [
+         {
+             "name": "resolution",
+             "values": [ 256 ],
+             "__comment": "lower number = more blur and choppiness - used in bloom"
+         }
+      ]
+    },
+    {
+      "name": "blit",
+      "intarget": "blur",
+      "outtarget": "past"
+    },
+    {
+      "name": "Invictus_average",
+      "intarget": "blur",
+      "outtarget": "average"
+    },
+    {
+      "name": "Invictus_day",
+      "intarget": "minecraft:main",
+      "outtarget": "day"
+    },
+    {
+      "name": "Invictus_night",
+      "intarget": "minecraft:main",
+      "outtarget": "night",
+      "auxtargets": [
+          {
+              "name": "BlurSampler",
+              "id": "blur"
+          }
+       ]
+    },
+    {
+      "name": "Invictus_composite",
+      "intarget": "minecraft:main",
+      "outtarget": "composite",
+      "auxtargets": [
+          {
+              "name": "DaySampler",
+              "id": "day"
+          },
+          {
+              "name": "NightSampler",
+              "id": "night"
+          },
+          {
+              "name": "AverageSampler",
+              "id": "average"
+          }
+       ]
+    },
+    {
+      "name": "blit",
+      "intarget": "composite",
+      "outtarget": "minecraft:main"
+    }
+  ]
+}
